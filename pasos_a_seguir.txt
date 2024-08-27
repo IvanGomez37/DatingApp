@@ -1,0 +1,124 @@
+## INICIALIZACION ##
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet new sln
+La plantilla "Archivo de la solución" se creó correctamente.
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet new webapi -h
+ASP.NET Core Web API (C#)
+Autor: Microsoft
+Descripción: Una plantilla de proyecto para crear una API web RESTful utilizando controladores ASP.NET Core o API mínimas, con soporte opcional para OpenAPI y autenticación.
+
+Uso:
+  dotnet new webapi [opciones] [opciones de plantilla]
+
+Opciones:
+  -n, --name <name>       Nombre de la salida que se va a crear. Si no se especifica ningún nombre, se usa el nombre del directorio de salida.
+  -o, --output <output>   Ubicación en la que se colocará el resultado generado.
+  --dry-run               Muestra un resumen de lo que sucede si se ejecuta la línea de comandos dada si se crea una plantilla.
+  --force                 Fuerza la generación de contenido aunque cambie a los archivos existentes.
+  --no-update-check       Deshabilita la comprobación de las actualizaciones del paquete de plantillas al crear una plantilla de forma instantánea.
+  --project <project>     Proyecto que se debe usar para la evaluación de contexto.
+  -lang, --language <C#>  Especifica el lenguaje de plantilla del que se va a crear una instancia.
+  --type <project>        Especifica el tipo de plantilla del que se va a crear una instancia.
+
+Opciones de plantilla:
+  -au, --auth <IndividualB2C|None|SingleOrg|Windows>  El tipo de autenticación que se va a usar
+                                                      Tipo: choice
+                                                        None           Sin autenticación
+                                                        IndividualB2C  Autenticación individual con Azure AD B2C
+                                                        SingleOrg      Autenticación organizacional para un único inquilino
+                                                        Windows        Autenticación de Windows
+                                                      Predeterminado: None
+  --aad-b2c-instance <aad-b2c-instance>               Instancia de Azure Active Directory B2C a la que conectarse (se usa con la autenticación IndividualB2C).
+                                                      Tipo: string
+                                                      Predeterminado: https://qualified.domain.name.b2clogin.com/
+  -ssp, --susi-policy-id <susi-policy-id>             Id. de la directiva de inicio de sesión y registro para este proyecto (se usa con la autenticación 
+                                                      IndividualB2C).
+                                                      Tipo: string
+                                                      Predeterminado: b2c_1_susi
+  --aad-instance <aad-instance>                       Instancia de Azure Active Directory a la que se va a conectar (se usa con la autenticación SingleOrg).
+                                                      Tipo: string
+                                                      Predeterminado: https://login.microsoftonline.com/
+  --client-id <client-id>                             Id. de cliente de este proyecto (se usa con la autenticación SingleOrg o IndividualB2C).
+                                                      Tipo: string
+                                                      Predeterminado: 11111111-1111-1111-11111111111111111
+  --domain <domain>                                   Dominio del inquilino de directorio (se usa con la autenticación SingleOrg o IndividualB2C).
+                                                      Tipo: string
+                                                      Predeterminado: qualified.domain.name
+  --default-scope <default-scope>                     Ámbito de API que el cliente debe solicitar para aprovisionar un token de acceso. (Se usa con 
+                                                      IndividualB2C, SingleOrg).
+                                                      Tipo: string
+                                                      Predeterminado: access_as_user
+  --tenant-id <tenant-id>                             Id. de TenantId del directorio al que se va a conectar (se usa con la autenticación SingleOrg).
+                                                      Tipo: string
+                                                      Predeterminado: 22222222-2222-2222-2222-222222222222
+  -r, --org-read-access                               Indica si se va a permitir o no el acceso de lectura de esta aplicación al directorio (solo se aplica a la 
+                                                      autenticación SingleOrg).
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  --exclude-launch-settings                           Indica si se va a excluir launchSettings.json en la plantilla generada.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  --no-https                                          Ya sea para desactivar HTTPS. Esta opción solo se aplica si no se utilizan IndividualB2C, SingleOrg o 
+                                                      MultiOrg para --auth.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  -uld, --use-local-db                                Indica si se va a usar LocalDB en lugar de SQLite. Esta opción solo se aplica si se especifica --auth 
+                                                      Individual o --auth IndividualB2C.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  -f, --framework <net8.0>                            Marco de destino del proyecto.
+                                                      Tipo: choice
+                                                        net8.0  net8.0 de destino
+                                                      Predeterminado: net8.0
+  --no-restore                                        Si se especifica, se omite la restauración automática del proyecto durante la creación.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  --called-api-url <called-api-url>                   Dirección URL de la API a la que se va a llamar desde la aplicación web. Esta opción solo se aplica si se 
+                                                      especifica --auth SingleOrg o --auth IndividualB2C.
+                                                      Tipo: string
+                                                      Predeterminado: https://graph.microsoft.com/v1.0
+  --calls-graph                                       Especifica si la aplicación web llama a Microsoft Graph. Esta opción solo se aplica si se especifica --auth 
+                                                      SingleOrg.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  --called-api-scopes <called-api-scopes>             Ámbitos para solicitar llamar a la API desde la aplicación web. Esta opción solo se aplica si se especifica 
+                                                      --auth SingleOrg o --auth IndividualB2C.
+                                                      Tipo: string
+                                                      Predeterminado: user.read
+  --no-openapi                                        Deshabilitar la compatibilidad con OpenAPI (Swagger)
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  --use-program-main                                  Indica si se debe generar una clase Program explícita y un método Main en lugar de instrucciones de nivel 
+                                                      superior.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+  -controllers, --use-controllers                     Si utilizar controladores en lugar de API mínimas. Esta opción sustituye al valor especificado por 
+                                                      --minimalista.
+                                                      Tipo: bool
+                                                      Predeterminado: false
+
+Para ver la ayuda de otros idiomas de plantilla (F#), utilice la opción de lenguaje:
+   dotnet new webapi -h --language F#
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet new webapi -controllers -n API
+La plantilla "ASP.NET Core Web API" se creó correctamente.
+
+Procesando acciones posteriores a la creación...
+Restaurando /Users/samaelxz/Documents/Materias/Semestre 9/1. Servicios Web/DatingApp/API/API.csproj:
+  Determining projects to restore...
+  Se ha restaurado /Users/samaelxz/Documents/Materias/Semestre 9/1. Servicios Web/DatingApp/API/API.csproj (en 4,33 s).
+Restauración realizada correctamente.
+
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet sln list
+No se han encontrado proyectos en la solución.
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet sln add API
+Se ha agregado el proyecto "API/API.csproj" a la solución.
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % dotnet sln list   
+Proyectos
+---------
+API/API.csproj
+
+(base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % 
