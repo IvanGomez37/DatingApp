@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 
 .DS_Store
+*.db
+API/dating.db-shm
+API/dating.db-wal
