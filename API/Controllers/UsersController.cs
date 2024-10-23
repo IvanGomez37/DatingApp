@@ -1,55 +1,38 @@
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using API.DTOs;
 
 namespace API.Controllers;
 
 [Authorize]
 public class UsersController : BaseApiController
 {
-    private readonly DataContext _context;
+    private readonly IUserRepository _repository;
 
-    public UsersController(DataContext context)
+    public UsersController(IUserRepository repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
     }
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUser>>>GetUsersAsync()
+    public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync()
     {
-        var users = await _context.Users.ToListAsync();
+        var members = await _repository.GetMembersAsync();
 
-        return users;
+        return Ok(members);
     }
 
-    [Authorize]
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<AppUser>>GetUsersById(int id)
+    [HttpGet("{username}")]
+public async Task<ActionResult<MemberResponse>>GetByUsernameAsync(string username)
     {
-        var user = await _context.Users.FindAsync(id);
+        var member = await _repository.GetMemberAsync(username);
     
-        if (user == null) return NotFound();
+        if (member == null) return NotFound();
     
-        return user;
+        return member;
     }
-
-    [HttpGet("{name}")]
-    public ActionResult<string> Ready(string name)
-    {
-        return $"Hello, {name}";
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<AppUser>> AddUser(AppUser user)
-    {
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetUsersById), new { id = user.Id }, user);
-    }
-
-
 }
