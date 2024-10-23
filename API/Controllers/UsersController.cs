@@ -1,8 +1,6 @@
 using API.Data;
-using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
 using API.DTOs;
 
 namespace API.Controllers;
@@ -12,7 +10,7 @@ public class UsersController : BaseApiController
 {
     private readonly IUserRepository _repository;
 
-    public UsersController(IUserRepository repository, IMapper mapper)
+    public UsersController(IUserRepository repository)
     {
         _repository = repository;
     }
