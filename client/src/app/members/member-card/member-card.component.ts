@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { Member } from '../../models/member';
 
 @Component({
@@ -6,7 +6,8 @@ import { Member } from '../../models/member';
   standalone: true,
   imports: [],
   templateUrl: './member-card.component.html',
-  styleUrl: './member-card.component.css'
+  styleUrl: './member-card.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 
 export class MemberCardComponent {
