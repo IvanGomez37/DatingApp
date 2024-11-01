@@ -4,10 +4,11 @@
             <h1>Edit your profile</h1>
         </div>
         <div class="col-8">
-            <div class="alert alert-info">
-                <p><strong>Important!</strong>
-                    You can edit your profile here.</p>
-            </div>
+            @if (editForm.dirty) {
+                <div class="alert alert-info pb-0">
+                    <p><strong>Information: </strong>You have made some changes. If you leave without saving, the changes will be lost.</p>
+                </div>
+            }
         </div>
         <div class="col-4">
             <div class="card">
@@ -31,33 +32,57 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="btn-group d-flex">
-                        <button class="btn btn-primary">Save</button>
-                    </div>
+                    <button
+                        [disabled]="!editForm.dirty"
+                        form="editForm" type="submit"
+                        class="btn btn-success col-12">
+                        Save changes
+                    </button>
                 </div>
             </div>
         </div>
         <div class="col-8">
             <tabset class="member-tabset">
                 <tab heading="About {{member.knownAs}}">
-                    <form>
+                    <form id="editForm" #editForm="ngForm" (ngSubmit)="updateMember()">
                         <h4 class="mt-2">Description</h4>
-                        <textarea name="introduction" id="introduction" class="form-control" [(ngModel)]="member.introduction" rows="3"></textarea>
-                        <h4 class="mt-2">Looking For</h4>
-                        <textarea name="lookingfor" id="lookingfor" class="form-control" [(ngModel)]="member.lookingFor" rows="3"></textarea>
+                        <textarea
+                            class="form-control"
+                            name="introduction"
+                            id="introduction"
+                            [(ngModel)]="member.introduction"
+                            rows="4"></textarea>
+                        <h4 class="mt-2">Looking for</h4>
+                        <textarea
+                            class="form-control"
+                            name="lookingFor"
+                            id="lookingFor"
+                            [(ngModel)]="member.lookingFor"
+                            rows="4"></textarea>
                         <h4 class="mt-2">Interests</h4>
-                        <textarea name="interests" id="interests" class="form-control" [(ngModel)]="member.interests" rows="3"></textarea>
+                        <textarea
+                            class="form-control"
+                            name="interests"
+                            id="interests"
+                            [(ngModel)]="member.interests"
+                            rows="4"></textarea>
+                        <div class="mt-2">Location details</div>
                         <div class="d-flex align-items-center">
                             <label>City: </label>
-                            <input type="text" class="form-control mx-2" [(ngModel)]="member.city">
+                            <input type="text"
+                                class="form-control mx-2"
+                                name="city"
+                                [(ngModel)]="member.city">
                             <label>Country: </label>
-                            <input type="text" class="form-control mx-2" [(ngModel)]="member.country">
+                            <input type="text"
+                                class="form-control mx-2"
+                                name="country"
+                                [(ngModel)]="member.country">
                         </div>
                     </form>
                 </tab>
                 <tab heading="Photos">
-                    <h4>Edit Photos</h4>
-                    <p>{{member.interests}}</p>
+                    Editor de fotos
                 </tab>
             </tabset>
         </div>
