@@ -14,6 +14,7 @@ public class Startup
     public Startup(IConfiguration config)
     {
         _config = config;
+        Configuration = config;
     }
 
     public IConfiguration Configuration { get; }

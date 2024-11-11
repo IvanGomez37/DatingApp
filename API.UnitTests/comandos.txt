@@ -1,0 +1,8 @@
+dotnet test # Para correr las pruebas
+dotnet test --collect:"XPlat Code Coverage" # Para guardar el resultado de la cobertura
+dotnet tool install -g dotnet-reportgenerator-globaltool # Para instalar la herramienta de reportes
+reportgenerator -reports:"TestResults/ab95290d-97a6-422e-8d19-b667b037ff5a/coverage.cobertura.xml" -reporttypes:Html # Para generar el reporte de cobertura en HTML
+
+zsh -l
+
+reportgenerator -reports:"TestResults/40cc6bfd-8694-46aa-a80b-cc4e7a3a0747/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypcls

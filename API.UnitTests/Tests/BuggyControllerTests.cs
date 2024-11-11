@@ -17,6 +17,10 @@ public class BuggyControllerTests
     public BuggyControllerTests()
     {
         _client = TestHelper.Instance.Client;
+        httpResponse = new HttpResponseMessage();
+        requestUrl = string.Empty;
+        loginObjetct = string.Empty;
+        httpContent = new StringContent(string.Empty);
     }
     [Theory]
     [InlineData("OK", "arenita", "HolaMundo")]
@@ -34,7 +38,7 @@ public class BuggyControllerTests
         httpResponse = await _client.PostAsync(requestUrl, httpContent);
         var reponse = await httpResponse.Content.ReadAsStringAsync();
         var userResponse = JsonSerializer.Deserialize<UserResponse>(reponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userResponse.Token);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userResponse!.Token);
         requestUrl = $"{apiRoute}/auth";
         // Act
         httpResponse = await _client.GetAsync(requestUrl);

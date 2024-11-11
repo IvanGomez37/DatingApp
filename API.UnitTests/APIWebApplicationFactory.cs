@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text.Json;
 public class APIWebApplicationFactory<IStartup> : WebApplicationFactory<Startup>
 {
-    public IConfiguration Configuration { get; set; }
+    public IConfiguration? Configuration { get; set; }
     protected override void ConfigureWebHost(IWebHostBuilder builder) =>
         builder.ConfigureAppConfiguration((ctx, cbld) =>
             {
@@ -37,7 +37,7 @@ public class APIWebApplicationFactory<IStartup> : WebApplicationFactory<Startup>
                 // Add a database context using an in-memory database for testing.
                 services.AddDbContext<DataContext>(options =>
                 {
-                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                    options.UseSqlite(Configuration?.GetConnectionString("DefaultConnection"));
                     options.EnableSensitiveDataLogging();
                 });
             })
@@ -84,7 +84,7 @@ internal static class LoadTestData<T> where T : class
         using (StreamReader r = new(Path.Combine(Environment.CurrentDirectory, FLD_SEED_DATA, fileName)))
         {
             var json = r.ReadToEnd();
-            seedType = JsonSerializer.Deserialize<List<T>>(json, new JsonSerializerOptions { IgnoreNullValues = true });
+            seedType = JsonSerializer.Deserialize<List<T>>(json, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
         }
         if (seedType == null)
         {
