@@ -6,3 +6,13 @@ reportgenerator -reports:"TestResults/ab95290d-97a6-422e-8d19-b667b037ff5a/cover
 zsh -l
 
 reportgenerator -reports:"TestResults/7cc57061-8fed-41ff-b356-3f2da9945d0e/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypcls
+
+dotnet test --collect:"XPlat Code Coverage"
+
+reportgenerator -reports:"" -targetdir:"coveragereport" -reporttypcls
+
+reportgenerator -reports:"" -targetdir:"coveragereport" -reporttypcls
+
+reportgenerator -reports:"" -targetdir:"coveragereport" -reporttypcls
+
+reportgenerator -reports:"" -targetdir:"coveragereport" -reporttypcls

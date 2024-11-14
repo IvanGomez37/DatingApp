@@ -14,6 +14,7 @@ public class BuggyControllerTests
     private string requestUrl;
     private string loginObjetct;
     private HttpContent httpContent;
+    
     public BuggyControllerTests()
     {
         _client = TestHelper.Instance.Client;
