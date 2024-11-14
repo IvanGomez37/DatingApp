@@ -11,10 +11,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 
+[ExcludeFromCodeCoverage]
 public class APIWebApplicationFactory<IStartup> : WebApplicationFactory<Startup>
 {
     public IConfiguration? Configuration { get; set; }
@@ -55,6 +57,7 @@ public class APIWebApplicationFactory<IStartup> : WebApplicationFactory<Startup>
                     {
                         await context.Database.MigrateAsync();
                         await Seed.SeedUsersAsync(context);
+                        __loadTestData(context);
                     }
                     catch (Exception ex)
                     {

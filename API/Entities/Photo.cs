@@ -1,6 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Entities;
+
+[ExcludeFromCodeCoverage]
 
 [Table("Photos")]
 public class Photo
