@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
+[ExcludeFromCodeCoverage]
 public class Seed
 {
     public static async Task SeedUsersAsync(DataContext context)
