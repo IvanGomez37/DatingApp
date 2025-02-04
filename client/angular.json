@@ -22,12 +22,14 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
+              "src/favicon2.ico",
               "src/assets"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/bootswatch/dist/quartz/bootstrap.min.css",
+              "node_modules/ngx-spinner/animations/ball-atom.css",
+              "node_modules/bootswatch/dist/flatly/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
@@ -52,7 +54,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
