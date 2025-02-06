@@ -33,7 +33,7 @@ public class UsersController : BaseApiController
         return Ok(members);
     }
 
-    [HttpGet("{username}")]
+    [HttpGet("{username}", Name = "GetByUsername")]
     public async Task<ActionResult<MemberResponse>> GetByUsernameAsync(string username)
     {
         var member = await _repository.GetMemberAsync(username);
@@ -77,7 +77,8 @@ public class UsersController : BaseApiController
         user.Photos.Add(photo);
         if (await _repository.SaveAllAsync())
         {
-            return _mapper.Map<PhotoResponse>(photo);
+            return CreatedAtRoute("GetByUsername", new { username = user.UserName }, _mapper.Map<PhotoResponse>(photo));
+            // return _mapper.Map<PhotoResponse>(photo);
         }
         return BadRequest("Failed to add photo");
     }
