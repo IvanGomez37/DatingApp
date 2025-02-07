@@ -47,4 +47,8 @@ export class MemberEditComponent implements OnInit {
       error: (error) => this.toaster.error(error)
     });
   }
+
+  onMemberChange(event: Member){
+    this.member = event;
+  }
 }
