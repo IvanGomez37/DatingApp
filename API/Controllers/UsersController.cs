@@ -103,26 +103,19 @@ public class UsersController : BaseApiController
     }
 
     [HttpDelete("photo/{photoId:int}")]
-    public async Task<ActionResult> DeletePhotoAsync(int photoId)
+    public async Task<ActionResult> DeletePhoto(int photoId)
     {
         var user = await _repository.GetByUsernameAsync(User.GetUsername());
-        if (user == null) return BadRequest("No user found");
-
+        if (user == null) return BadRequest("User not found");
         var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
-        if (photo == null) return NotFound("No photo found");
-
-        if (photo.IsMain) return BadRequest("You cannot delete your main photo");
-
+        if (photo == null || photo.IsMain) return BadRequest("This photo can't be deleted");
         if (photo.PublicId != null)
         {
             var result = await _photoService.DeletePhotoAsync(photo.PublicId);
             if (result.Error != null) return BadRequest(result.Error.Message);
         }
-
         user.Photos.Remove(photo);
-
-        if (await _repository.SaveAllAsync()) return NoContent();
-
-        return BadRequest("Failed to delete photo");
+        if (await _repository.SaveAllAsync()) return Ok();
+        return BadRequest("There was a problem when deleting the photo");
     }
 }
