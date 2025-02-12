@@ -5,6 +5,7 @@ import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../services/account.service';
 import { environment } from '../../../environments/environment';
 import { MembersService } from '../../services/members.service';
+import { Photo } from '../../models/photo';
 
 @Component({
   selector: 'app-photo-editor',
@@ -44,6 +45,16 @@ export class PhotoEditorComponent implements OnInit{
         if(p.id === photo.id) p.isMain = true;
       });
     })
+  }
+
+  deletePhoto(photo: Photo) {
+    this.memberService.deletePhoto(photo).subscribe({
+      next: _ => {
+        const updatedMember = { ...this.member() };
+        updatedMember.photos = updatedMember.photos.filter(p => p.id !== photo.id);
+        this.memberChange.emit(updatedMember);
+      }
+    });
   }
 
   fileOverBase(e: any){
