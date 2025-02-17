@@ -2,12 +2,12 @@ import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule, ValidatorFn, AbstractControl } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { ToastrService } from 'ngx-toastr';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, NgIf],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
