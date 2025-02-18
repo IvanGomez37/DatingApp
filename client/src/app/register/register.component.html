@@ -4,11 +4,13 @@
 
     <div class="mb-3">
         <label style="margin-right: 10px;">I am a:</label>
-        <label style="margin-right: 10px;" class="form-check-label" >
-            <input type="radio" class="form-check-input" value="female" formControlName="gender">Female
+        <label style="margin-right: 10px;" class="form-check-label">
+            <input style="margin-right: 4px;" type="radio" class="form-check-input" value="female"
+                formControlName="gender">Female
         </label>
         <label class="form-check-label">
-            <input type="radio" class="form-check-input" value="male" formControlName="gender">Male
+            <input style="margin-right: 4px;" type="radio" class="form-check-input" value="male"
+                formControlName="gender">Male
         </label>
     </div>
 
@@ -20,7 +22,7 @@
     <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'" />
     <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm password'"
         [type]="'password'" />
-        
+
     <div class="form-group text-center">
         <button class="btn btn-success me-2" type="submit">Register</button>
         <button class="btn btn-default me-2" type="button" (click)="cancel()">Cancel</button>
