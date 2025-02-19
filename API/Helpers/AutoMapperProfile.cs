@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection.Metadata;
 using API.DTOs;
 using API.Entities;
@@ -21,5 +22,7 @@ public class AutoMapperProfile : Profile
                     ));
         CreateMap<Photo, PhotoResponse>();
         CreateMap<MemberUpdateRequest, AppUser>();
+        CreateMap<RegisterRequest, AppUser>();
+        CreateMap<string, DateOnly>().ConvertUsing(s => DateOnly.Parse(s, CultureInfo.InvariantCulture));
     }
 }
