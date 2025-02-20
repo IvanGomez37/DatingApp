@@ -10,17 +10,15 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, TextInputComponent, DatePickerComponent],
+  imports: [ReactiveFormsModule, TextInputComponent, DatePickerComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements OnInit{
-  private accountService = inject(AccountService)
-  private toastr = inject(ToastrService);
+export class RegisterComponent implements OnInit {
+  private accountService = inject(AccountService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   cancelRegister = output<boolean>();
-  model: any = {};
   registerForm: FormGroup = new FormGroup({});
   maxDate = new Date();
   validationErrors: string[] | undefined;
@@ -30,9 +28,9 @@ export class RegisterComponent implements OnInit{
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
-  initializeForm(){
+  initializeForm() {
     this.registerForm = this.fb.group({
-      gender: ["male"],
+      gender: ["female"],
       username: ["", Validators.required],
       knownAs: ["", Validators.required],
       birthDay: ["", Validators.required],
@@ -42,27 +40,27 @@ export class RegisterComponent implements OnInit{
       confirmPassword: ["", [Validators.required, this.matchValues("password")]]
     });
 
-    this.registerForm.controls["password"].valueChanges.subscribe(() => {
-      this.registerForm.controls["confirmPassword"].updateValueAndValidity();
-    });
+    this.registerForm.controls["password"].valueChanges.subscribe({
+      next: () => this.registerForm.controls["confirmPassword"].updateValueAndValidity()
+    })
   }
 
   matchValues(matchTo: string): ValidatorFn {
     return (control: AbstractControl) => {
-      return control?.value === control?.parent?.get(matchTo)?.value ? null : {isMatching: true}
-    }
+      return control.value === control.parent?.get(matchTo)?.value ? null : { isMatching: true }
+    };
   }
 
-  register() {
+  register(): void {
     const bd = this.getDateOnly(this.registerForm.get("birthDay")?.value);
     this.registerForm.patchValue({ birthDay: bd });
-    this.accountService.register(this.model).subscribe({
+    this.accountService.register(this.registerForm.value).subscribe({
       next: () => this.router.navigateByUrl("/members"),
       error: (error) => this.validationErrors = error
     });
   }
 
-  cancel() {
+  cancel(): void {
     this.cancelRegister.emit(false);
   }
 
