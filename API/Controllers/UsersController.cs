@@ -5,6 +5,7 @@ using API.DTOs;
 using System.Security.Claims;
 using AutoMapper;
 using API.Interfaces;
+using API.Helpers;
 using API.Extensions;
 using API.Entities;
 
@@ -26,9 +27,11 @@ public class UsersController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync([FromQuery] UserParams userParams)
     {
-        var members = await _repository.GetMembersAsync();
+        var members = await _repository.GetMembersAsync(userParams);
+
+        Response.AddPaginationHeader(members);
 
         return Ok(members);
     }
