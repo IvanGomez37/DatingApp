@@ -3,6 +3,8 @@ import { MembersService } from '../../services/members.service';
 import { Member } from '../../models/member';
 import { MemberCardComponent } from '../member-card/member-card.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AccountService } from '../../services/account.service';
+import { UserParams } from '../../models/userParams';
 
 @Component({
   selector: 'app-member-list',
@@ -12,9 +14,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   styleUrl: './member-list.component.css'
 })
 export class MemberListComponent implements OnInit{
+  private accountService = inject(AccountService);
   membersService = inject(MembersService);
-  pageNumber = 1;
-  pageSize = 5;
+  userParams = new UserParams(this.accountService.currentUser());
 
   ngOnInit(): void {
     if (!this.membersService.paginatedResult()){
@@ -23,12 +25,12 @@ export class MemberListComponent implements OnInit{
   }
 
   loadMembers(): void {
-    this.membersService.getMembers(this.pageNumber, this.pageSize);
+    this.membersService.getMembers(this.userParams);
   }
 
   pageChanged(event: any) {
-    if (this.pageNumber !== event.page) {
-      this.pageNumber = event.page;
+    if (this.userParams.pageNumber !== event.page) {
+      this.userParams.pageNumber = event.page;
       this.loadMembers();
     }
   }
