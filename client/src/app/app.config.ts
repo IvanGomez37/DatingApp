@@ -9,6 +9,7 @@ import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './interceptors/loading.interceptor';
+import { TimeagoModule } from 'ngx-timeago';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideToastr({
       positionClass: "toast-bottom-right"
     }),
-    importProvidersFrom(NgxSpinnerModule),
+    importProvidersFrom(NgxSpinnerModule, TimeagoModule.forRoot()),
       {
         provide: GALLERY_CONFIG,
         useValue: {
