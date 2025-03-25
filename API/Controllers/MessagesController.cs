@@ -3,6 +3,7 @@ namespace API.Controllers;
 using System.Globalization;
 using API.Data;
 using API.Entities;
+using API.Helpers;
 using API.DTOs;
 using API.Extensions;
 using AutoMapper;
@@ -49,4 +50,14 @@ public class MessagesController
 
         return BadRequest("Something went wrong!");
     }
+
+    [HttpGet]
+     public async Task<ActionResult<IEnumerable<MessageResponse>>> GetMessagesForUser(
+         [FromQuery] MessageParams messageParams)
+     {
+         messageParams.Username = User.GetUsername();
+         var messages = await messageRepository.GetForUserAsync(messageParams);
+         Response.AddPaginationHeader(messages);
+         return messages;
+     }
 }
