@@ -122,3 +122,6 @@ Proyectos
 API/API.csproj
 
 (base) samaelxz@MacBook-Air-de-Angel-2 DatingApp % 
+
+
+Crear componente: ng g c members/member-messages/member-messages --skip-tests  
