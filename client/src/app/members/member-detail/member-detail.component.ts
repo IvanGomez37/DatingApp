@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { MemberMessagesComponent } from '../member-messages/member-messages/member-messages.component';
 import { MessagesService } from '../../services/messages.service';
 import { Message } from '../../models/message';
+import { Member } from '../../models/member';
 
 @Component({
   selector: 'app-member-detail',
@@ -17,17 +18,27 @@ import { Message } from '../../models/message';
   styleUrl: './member-detail.component.css'
 })
 export class MemberDetailComponent implements OnInit {
-  @ViewChild("memberTabs") memberTabs?: TabsetComponent;
+  @ViewChild("memberTabs", { static: true }) memberTabs?: TabsetComponent;
   private memberService = inject(MembersService);
   private messagesService = inject(MessagesService);
   private route = inject(ActivatedRoute);
-  member?: any;
+  member: Member = {} as Member;
   images: GalleryItem[] = [];
   activeTab?: TabDirective;
   messages: Message[] = [];
 
   ngOnInit(): void {
-    this.loadMember();
+    // this.loadMember();
+
+    this.route.data.subscribe({
+      next: data => {
+        this.member = data["member"];
+        this.member && this.member.photos.map((photo) => {
+          this.images.push(new ImageItem({src: photo.url, thumb: photo.url}));
+        });
+      }
+    });
+
     this.route.queryParams.subscribe({
       next: params => {
         params['tab'] && this.selectTab(params['tab'])
@@ -51,7 +62,7 @@ export class MemberDetailComponent implements OnInit {
     }
   }
 
-  loadMember() {
+  /* loadMember() {
     const username = this.route.snapshot.paramMap.get('username');
     console.log("Username:" + username);
     if (!username) return;
@@ -63,6 +74,6 @@ export class MemberDetailComponent implements OnInit {
         });
       }
     });
-  }
+  } */
 
 }
