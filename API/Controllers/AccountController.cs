@@ -23,8 +23,6 @@ public class AccountController(DataContext context, ITokenService tokenService, 
         using var hmac = new HMACSHA512();
         var user = mapper.Map<AppUser>(request);
         user.UserName = request.username.ToLowerInvariant();
-        // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.password));
-        // user.PasswordSalt = hmac.Key;
 
         context.Users.Add(user);
         await context.SaveChangesAsync();

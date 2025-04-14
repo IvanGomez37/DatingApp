@@ -1,32 +1,39 @@
+namespace API.Data;
+
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
+using API.DTOs;
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
-namespace API.Data;
 
 [ExcludeFromCodeCoverage]
 public class Seed
 {
-    public static async Task SeedUsersAsync(DataContext context)
+    public static async Task SeedUsersAsync(UserManager<AppUser> userManager)
     {
-        if (await context.Users.AnyAsync()) return;
+        if (await userManager.Users.AnyAsync())
+        {
+            return;
+        }
 
         var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        var users = JsonSerializer.Deserialize<List<AppUser>>(userData, options); //See if it correct
-        
-        if (users == null) return;
+        var users = JsonSerializer.Deserialize<List<AppUser>>(userData, ReadOptions);
+
+        if (users == null)
+        {
+            return;
+        }
 
         foreach (var user in users)
         {
-
-            using var hmac = new HMACSHA512();
-
-            context.Users.Add(user);
+            await userManager.CreateAsync(user, "Pa$$w0rd");
         }
-        await context.SaveChangesAsync();
     }
+
+    private static readonly JsonSerializerOptions ReadOptions = new()
+    {
+        AllowTrailingCommas = true
+    };
 }
