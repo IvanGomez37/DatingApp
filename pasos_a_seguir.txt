@@ -125,3 +125,4 @@ API/API.csproj
 
 
 Crear componente: ng g c members/member-messages/member-messages --skip-tests  
+Crear componente: ng g c admin/admin-panel/admin-panel --skip-tests  
