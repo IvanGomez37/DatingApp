@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-roles-modal',
@@ -8,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './roles-modal.component.css'
 })
 export class RolesModalComponent {
-
+  bsModalRef = inject(BsModalRef);
+  title = "";
+  list: string[] = [];
 }
