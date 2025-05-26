@@ -12,11 +12,11 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<AppUser, MemberResponse>()
-            .ForMember(dest => dest.Age, 
+            .ForMember(dest => dest.Age,
                 opt => opt.MapFrom(
                     src => src.BirthDay.CalculateAge()))
             .ForMember(
-                dest => dest.PhotoUrl, 
+                dest => dest.PhotoUrl,
                 opt => opt.MapFrom(
                     src => src.Photos.FirstOrDefault(p => p.IsMain)!.Url
                     ));
@@ -29,5 +29,9 @@ public class AutoMapperProfile : Profile
                  o => o.MapFrom(s => s.Sender.Photos.FirstOrDefault(p => p.IsMain)!.Url))
              .ForMember(d => d.RecipientPhotoUrl,
                  o => o.MapFrom(s => s.Recipient.Photos.FirstOrDefault(p => p.IsMain)!.Url));
+        CreateMap<DateTime, DateTime>()
+            .ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+        CreateMap<DateTime?, DateTime?>()
+            .ConvertUsing(d => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
     }
 }
