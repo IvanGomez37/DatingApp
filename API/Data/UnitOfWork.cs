@@ -3,7 +3,7 @@ namespace API.Data;
 using System.Threading.Tasks;
 using API.UnitOfWork;
 
-public class UnitOfWork(
+public class UnitOfWorkX(
     DataContext context,
     IUserRepository userRepository,
     ILikesRepository likesRepository,

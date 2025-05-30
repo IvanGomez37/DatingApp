@@ -8,19 +8,20 @@ using API.Interfaces;
 using API.Helpers;
 using API.Extensions;
 using API.Entities;
+using API.UnitOfWork;
 
 namespace API.Controllers;
 
 [Authorize]
 public class UsersController : BaseApiController
 {
-    private readonly IUserRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
 
-    public UsersController(IUserRepository repository, IMapper mapper, IPhotoService photoService)
+    public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
         _photoService = photoService;
     }
@@ -30,7 +31,7 @@ public class UsersController : BaseApiController
     public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync([FromQuery] UserParams userParams)
     {
         userParams.CurrentUsername = User.GetUsername();
-        var members = await _repository.GetMembersAsync(userParams);
+        var members = await _unitOfWork.UserRepository.GetMembersAsync(userParams);
 
         Response.AddPaginationHeader(members);
 
@@ -40,7 +41,7 @@ public class UsersController : BaseApiController
     [HttpGet("{username}", Name = "GetByUsername")]
     public async Task<ActionResult<MemberResponse>> GetByUsernameAsync(string username)
     {
-        var member = await _repository.GetMemberAsync(username.ToLowerInvariant());
+        var member = await _unitOfWork.UserRepository.GetMemberAsync(username.ToLowerInvariant());
 
         if (member == null) return NotFound();
 
@@ -53,13 +54,13 @@ public class UsersController : BaseApiController
         var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (username == null) return BadRequest("No user found in token");
 
-        var member = await _repository.GetByUsernameAsync(User.GetUsername());
+        var member = await _unitOfWork.UserRepository.GetByUsernameAsync(User.GetUsername());
         if (member == null) return NotFound("No user found");
 
         _mapper.Map(request, member);
-        _repository.Update(member);
+        _unitOfWork.UserRepository.Update(member);
 
-        if (await _repository.SaveAllAsync()) return NoContent();
+        if (await _unitOfWork.Complete()) return NoContent();
 
         return BadRequest("Failed to update user");
     }
@@ -67,7 +68,7 @@ public class UsersController : BaseApiController
     [HttpPost("photo")]
     public async Task<ActionResult<PhotoResponse>> AddPhotoAsync(IFormFile file)
     {
-        var user = await _repository.GetByUsernameAsync(User.GetUsername());
+        var user = await _unitOfWork.UserRepository.GetByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("No user found");
 
         var result = await _photoService.AddPhotoAsync(file);
@@ -83,7 +84,7 @@ public class UsersController : BaseApiController
             photo.IsMain = true;
         }
         user.Photos.Add(photo);
-        if (await _repository.SaveAllAsync())
+        if (await _unitOfWork.Complete())
         {
             return CreatedAtRoute("GetByUsername", new { username = user.UserName }, _mapper.Map<PhotoResponse>(photo));
             // return _mapper.Map<PhotoResponse>(photo);
@@ -93,7 +94,7 @@ public class UsersController : BaseApiController
     [HttpPut("photo/{photoId:int}")]
     public async Task<ActionResult> SetPhotoAsMainAsync(int photoId)
     {
-        var user = await _repository.GetByUsernameAsync(User.GetUsername());
+        var user = await _unitOfWork.UserRepository.GetByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("No user found");
 
         var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
@@ -105,7 +106,7 @@ public class UsersController : BaseApiController
         if (currentMain != null) currentMain.IsMain = false;
         photo.IsMain = true;
 
-        if (await _repository.SaveAllAsync()) return NoContent();
+        if (await _unitOfWork.Complete()) return NoContent();
 
         return BadRequest("Failed to set main photo");
     }
@@ -113,7 +114,7 @@ public class UsersController : BaseApiController
     [HttpDelete("photo/{photoId:int}")]
     public async Task<ActionResult> DeletePhoto(int photoId)
     {
-        var user = await _repository.GetByUsernameAsync(User.GetUsername());
+        var user = await _unitOfWork.UserRepository.GetByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("User not found");
         var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
         if (photo == null || photo.IsMain) return BadRequest("This photo can't be deleted");
@@ -123,7 +124,7 @@ public class UsersController : BaseApiController
             if (result.Error != null) return BadRequest(result.Error.Message);
         }
         user.Photos.Remove(photo);
-        if (await _repository.SaveAllAsync()) return Ok();
+        if (await _unitOfWork.Complete()) return Ok();
         return BadRequest("There was a problem when deleting the photo");
     }
 }
